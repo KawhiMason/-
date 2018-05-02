@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>图片预加载</title>
+<link rel="stylesheet" type="text/css" href="pictureLoad.css">
+<script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<div class="box">
+		<img src="http://img1.imgtn.bdimg.com/it/u=2064054871,2037178638&fm=200&gp=0.jpg" id="img" alt="pic">
+		<div>
+			<a href="javascript:;" class="btn" data-control = "prev">上一页</a>
+			<a href="javascript:;" class="btn" data-control = "next">下一页</a>
+		</div>
+	</div>
+	<div class="loading">
+		<p class="progress">0%</p>
+	</div>
+<script type="text/javascript" src="js/pictureLoad.js"></script>
+<script type="text/javascript" >
+		var imgs = [
+		'http://img1.imgtn.bdimg.com/it/u=2064054871,2037178638&fm=200&gp=0.jpg',
+		'http://img4.imgtn.bdimg.com/it/u=2331230572,2077140484&fm=200&gp=0.jpg',
+		'http://img5.imgtn.bdimg.com/it/u=1815887154,3236748813&fm=200&gp=0.jpg',
+		'http://img0.imgtn.bdimg.com/it/u=4258308838,1748608824&fm=200&gp=0.jpg'
+	];
+
+	var index = 0,
+		len = imgs.length,
+		$progress = $('.progress');
+
+	$.preLoad(imgs,{
+		each:function(count){
+			$('.progress').html(Math.round((count-1)/len*100) + '%');
+		},
+		all : function(){
+			$('.loading').hide();
+		}
+	})
+
+		// 未封装成插件
+	// $.each(imgs,function(i,src){
+	// 	var imgObj = new Image();
+
+	// 	$(imgObj).on('load error',function(){
+	// 		console.log(222);
+	// 		$progress.html(Math.round((count-1)/len*100) + '%');
+	// 		if(count >= len-1){
+	// 			$('.loading').hide();
+
+	// 		}
+	// 		count++;
+	// 	});
+	// 		imgObj.src = src;	
+	// })
+
+	$('.btn').on('click',function () {
+		if($(this).data('control') === 'prev'){
+			index = Math.max(0,--index);
+		}else{
+			index= Math.min(len-1,++index);
+		}
+		$('img').attr('src',imgs[index]);
+	})
+
+
+	
+</script>
+</body>
+</html>
